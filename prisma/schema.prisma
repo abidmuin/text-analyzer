@@ -14,9 +14,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         String   @id @default(uuid()) @map("id")
+  email      String?  @unique @map("email")
+  name       String?  @map("name")
+  provider   String   @map("provider")
+  providerId String   @map("provider_id")
+  avatarUrl  String?  @map("avatar_url")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  texts      Text[]
+
+  @@unique([provider, providerId])
+  @@map("users")
+}
+
 model Text {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(uuid()) @map("id")
+  content         String   @map("content")
+  char_count      Int      @map("char_count")
+  word_count      Int      @map("word_count")
+  sentence_count  Int      @map("sentence_count")
+  paragraph_count Int      @map("paragraph_count")
+  longestWords    String[] @map("longest_words")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  userId          String   @map("user_id")
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("texts")
 }
