@@ -19,9 +19,11 @@ export class AnalyzerService {
     const words = normalized.trim().split(/\s+/);
     const characters = normalized.replace(/\s/g, '');
 
-    const longestWords = paragraphs.map(p => {
-      const wordsInParagraph = p.trim().split(/\s+/);
-      return wordsInParagraph.reduce((a, b) => b.length > a.length ? b : a, '');
+    const longestWords = paragraphs.map(paragraph => {
+      const wordsInParagraph = paragraph.trim().split(/\s+/);
+      const maxLength = Math.max(...wordsInParagraph.map(word => word.length));
+      const longest = wordsInParagraph.filter(word => word.length === maxLength);
+      return [...new Set(longest)]; // Remove duplicates if any
     });
 
     return {
@@ -30,7 +32,7 @@ export class AnalyzerService {
       charCount: characters.length,
       sentenceCount: sentences.length,
       paragraphCount: paragraphs.length,
-      longestWords,
+      longestWords: longestWords.flat(),
     };
   }
 }

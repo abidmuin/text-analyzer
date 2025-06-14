@@ -23,7 +23,7 @@ CREATE TABLE "texts" (
     "longest_words" TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "user_id" TEXT NOT NULL,
+    "user_id" TEXT,
 
     CONSTRAINT "texts_pkey" PRIMARY KEY ("id")
 );
@@ -38,4 +38,4 @@ CREATE UNIQUE INDEX "users_provider_provider_id_key" ON "users"("provider", "pro
 CREATE INDEX "texts_user_id_idx" ON "texts"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "texts" ADD CONSTRAINT "texts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "texts" ADD CONSTRAINT "texts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
